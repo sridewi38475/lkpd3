@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD JavaScript - String, Number & Konversi Data | Sri Dewi</title>
+    <style>
+        :root {
+            --bg-main: #0a0a0c;
+            --bg-card: #121316;
+            --bg-code: #07080a;
+            --border-color: #24262b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-dim: rgba(56, 189, 248, 0.12);
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.65;
+            padding: 20px 16px 48px;
+        }
+
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        /* Header / Hero */
+        header {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+            letter-spacing: 0.4px;
+        }
+
+        h1 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .identity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 12px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            font-size: 0.88rem;
+        }
+
+        .identity-item span {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+        }
+
+        .identity-item strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Sections */
+        section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1.02rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin: 18px 0 8px;
+        }
+
+        p, li {
+            color: #cbd5e1;
+            font-size: 0.94rem;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        code {
+            font-family: "Fira Code", "Cascadia Code", Consolas, Monaco, monospace;
+            background: #1e2128;
+            color: var(--accent);
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 0.88em;
+        }
+
+        /* Code Block */
+        pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 16px;
+            overflow-x: auto;
+            margin: 10px 0 16px;
+            font-family: "Fira Code", Consolas, Monaco, monospace;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            color: #e2e8f0;
+        }
+
+        .kw { color: #c084fc; }
+        .str { color: #86efac; }
+        .num { color: #fbbf24; }
+        .fn { color: #38bdf8; }
+        .cm { color: #64748b; }
+
+        /* Tables */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 12px 0 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #181a20;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        td {
+            color: #cbd5e1;
+        }
+
+        /* Simulated Chrome DevTools Console Screenshot */
+        .screenshot-wrapper {
+            margin: 14px 0 18px;
+        }
+
+        .screenshot-caption {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .devtools-window {
+            background: #ffffff;
+            color: #202124;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #334155;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            user-select: none;
+        }
+
+        .devtools-tabs {
+            background: #f1f3f4;
+            border-bottom: 1px solid #dadce0;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 12px;
+            color: #5f6368;
+            height: 29px;
+            gap: 14px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .devtools-tab-icon {
+            font-size: 13px;
+            color: #5f6368;
+            letter-spacing: 2px;
+        }
+
+        .devtools-tab.active {
+            color: #1a73e8;
+            font-weight: 500;
+            border-bottom: 2px solid #1a73e8;
+            height: 29px;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        .devtools-toolbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e8eaed;
+            display: flex;
+            align-items: center;
+            padding: 4px 10px;
+            font-size: 11.5px;
+            color: #5f6368;
+            gap: 12px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .devtools-filter {
+            border: 1px solid #dadce0;
+            border-radius: 3px;
+            padding: 1px 8px;
+            color: #80868b;
+            min-width: 110px;
+            font-size: 11px;
+        }
+
+        .devtools-console-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 1px solid #f1f3f4;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 13px;
+            background: #ffffff;
+            color: #202124;
+        }
+
+        .devtools-console-line .val-num {
+            color: #1c00cf;
+        }
+
+        .devtools-console-line .val-str {
+            color: #202124;
+        }
+
+        .devtools-console-line .file-link {
+            color: #1155cc;
+            text-decoration: underline;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        /* Answer Box */
+        .answer-box {
+            background: #16181d;
+            border-left: 3px solid var(--accent);
+            padding: 12px 14px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 10px;
+        }
+
+        .answer-box strong {
+            color: #ffffff;
+        }
+
+        /* Refleksi 3-2-1 styling matching user screenshot */
+        .refleksi-section {
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .refleksi-section .ref-letter {
+            font-size: 1.35rem;
+            color: #e2e8f0;
+            margin-bottom: 12px;
+        }
+
+        .refleksi-section h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.55rem;
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 18px;
+        }
+
+        .refleksi-section h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.18rem;
+            color: #ffffff;
+            margin: 18px 0 10px;
+        }
+
+        .refleksi-section ul {
+            padding-left: 22px;
+        }
+
+        .refleksi-section li,
+        .refleksi-section p {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.03rem;
+            color: #e2e8f0;
+            line-height: 1.55;
+            margin-bottom: 8px;
+        }
+
+        /* Penilaian Diri styling matching user screenshot */
+        .penilaian-section {
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .penilaian-section .ref-letter {
+            font-size: 1.35rem;
+            color: #e2e8f0;
+            margin-bottom: 12px;
+        }
+
+        .penilaian-section h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.55rem;
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 16px;
+        }
+
+        .penilaian-grid {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .penilaian-grid th {
+            background: transparent;
+            border: none;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.08rem;
+            color: #ffffff;
+            padding: 8px 6px;
+        }
+
+        .penilaian-grid th:first-child {
+            text-align: center;
+        }
+
+        .penilaian-grid th:nth-child(2),
+        .penilaian-grid th:nth-child(3) {
+            text-align: center;
+            width: 56px;
+        }
+
+        .penilaian-grid td {
+            border: none;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.03rem;
+            color: #e2e8f0;
+            padding: 8px 6px;
+            vertical-align: middle;
+        }
+
+        .penilaian-grid td:nth-child(2),
+        .penilaian-grid td:nth-child(3) {
+            text-align: center;
+            font-family: sans-serif;
+        }
+
+        .badge-check {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #0a0a0c;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .badge-cross {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #0a0a0c;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .dash-mark {
+            color: #94a3b8;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border-color);
+            font-family: Georgia, "Times New Roman", serif;
+            color: #e2e8f0;
+            font-size: 1rem;
+        }
+
+        footer p {
+            font-family: Georgia, "Times New Roman", serif;
+            color: #e2e8f0;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <span class="badge">LEMBAR KERJA PESERTA DIDIK (LKPD)</span>
+            <h1>JavaScript - String, Number, dan Konversi Data</h1>
+            <p class="subtitle">Mata Pelajaran: Dasar-Dasar Pengembangan Perangkat Lunak dan Gim • Kelas X / Fase E (2 × 45 menit)</p>
+            <div class="identity-grid">
+                <div class="identity-item">
+                    <span>Satuan Pendidikan</span>
+                    <strong>SMKN 1 GARUT</strong>
+                </div>
+                <div class="identity-item">
+                    <span>Nama Peserta Didik</span>
+                    <strong>Sri Dewi</strong>
+                </div>
+                <div class="identity-item">
+                    <span>Kelas / Jurusan</span>
+                    <strong>X-PPLG 1</strong>
+                </div>
+                <div class="identity-item">
+                    <span>File Praktik</span>
+                    <strong>sridewi.js</strong>
+                </div>
+            </div>
+        </header>
+
+        <!-- BAGIAN A & B -->
+        <section>
+            <div class="section-label">Bagian A &amp; B</div>
+            <h2>Tujuan Pembelajaran &amp; Petunjuk Kerja</h2>
+            <p>Setelah menyelesaikan LKPD ini, peserta didik mampu:</p>
+            <ol>
+                <li>Membedakan tipe data <code>String</code> dan <code>Number</code>.</li>
+                <li>Menjelaskan bahwa fungsi <code>prompt()</code> menghasilkan <code>String</code>.</li>
+                <li>Menggunakan fungsi konversi <code>Number()</code> dan <code>String()</code>.</li>
+                <li>Menganalisis kesalahan akibat perbedaan tipe data.</li>
+                <li>Membuat program input dan perhitungan sederhana.</li>
+            </ol>
+            <div class="answer-box">
+                <strong>Petunjuk Kerja:</strong> Kerjakan secara mandiri terlebih dahulu menggunakan file praktik JavaScript (<code>lkpd_string_number_sridewi.js</code> / <code>sridewi.js</code>), lalu diskusikan hasilnya melalui metode <em>Think Pair Share</em>.
+            </div>
+        </section>
+
+        <!-- AKTIVITAS 1 -->
+        <section>
+            <div class="section-label">Bagian C • Aktivitas 1</div>
+            <h2>Eksperimen 10 + 20</h2>
+            <p><strong>Soal Praktik:</strong> Prediksikan hasil sebelum menjalankan kode berikut, lalu jalankan di Console dan amati hasilnya:</p>
+            <pre><span class="kw">let</span> a = <span class="str">"10"</span>;
+<span class="kw">let</span> b = <span class="str">"20"</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(a + b);</pre>
+
+            <div class="screenshot-wrapper">
+                <div class="screenshot-caption">Hasil Screenshot Console Praktik (Aktivitas 1):</div>
+                <div class="devtools-window">
+                    <div class="devtools-tabs">
+                        <span class="devtools-tab-icon">◰ ❏</span>
+                        <span>Elements</span>
+                        <span class="devtools-tab active">Console</span>
+                        <span>Sources</span>
+                        <span>Network</span>
+                        <span>»</span>
+                    </div>
+                    <div class="devtools-toolbar">
+                        <span>◫ ⊘</span>
+                        <span>top ▾</span>
+                        <span>👁</span>
+                        <span class="devtools-filter">Filter</span>
+                        <span>Default levels ▾</span>
+                        <span>No issues</span>
+                    </div>
+                    <div class="devtools-console-line">
+                        <span class="val-str">1020</span>
+                        <span class="file-link">sridewi.js:4</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 38%;">Pertanyaan</th>
+                            <th>Jawaban Kamu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Apa output program?</td>
+                            <td><code>1020</code></td>
+                        </tr>
+                        <tr>
+                            <td>Mengapa hasil tersebut terjadi?</td>
+                            <td>Karena nilai pada variabel <code>a</code> dan <code>b</code> diapit tanda kutip (<code>"10"</code> dan <code>"20"</code>) sehingga terbaca sebagai tipe data <strong>String</strong> (teks). Operator <code>+</code> pada String melakukan penggabungan teks (<em>concatenation</em>), bukan penjumlahan matematika.</td>
+                        </tr>
+                        <tr>
+                            <td>Apakah a dan b bertipe Number?</td>
+                            <td>Tidak. Keduanya bertipe data <strong>String</strong>.</td>
+                        </tr>
+                        <tr>
+                            <td>Uji sekarang. Apakah prediksimu benar? Jelaskan.</td>
+                            <td>Benar. Saat dijalankan di Console (<code>sridewi.js:4</code>), output yang muncul adalah <code>1020</code> karena JavaScript menggabungkan teks <code>"10"</code> dan <code>"20"</code> menjadi satu string.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- AKTIVITAS 2 -->
+        <section>
+            <div class="section-label">Bagian D • Aktivitas 2</div>
+            <h2>Menemukan Tipe Data</h2>
+            <p><strong>Soal Praktik:</strong> Jalankan kode berikut untuk memeriksa tipe data masing-masing variabel menggunakan operator <code>typeof</code>:</p>
+            <pre><span class="kw">let</span> nama = <span class="str">"Asep"</span>;
+<span class="kw">let</span> umur = <span class="num">16</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> nama);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> umur);</pre>
+
+            <div class="screenshot-wrapper">
+                <div class="screenshot-caption">Hasil Screenshot Console Praktik (Aktivitas 2):</div>
+                <div class="devtools-window">
+                    <div class="devtools-console-line">
+                        <span class="val-str">string</span>
+                        <span class="file-link">sridewi.js:9</span>
+                    </div>
+                    <div class="devtools-console-line">
+                        <span class="val-str">number</span>
+                        <span class="file-link">sridewi.js:10</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variabel</th>
+                            <th>Prediksi</th>
+                            <th>Hasil <code>typeof</code></th>
+                            <th>Kesimpulan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>nama</code></td>
+                            <td>String</td>
+                            <td><code>string</code></td>
+                            <td>Nilai <code>"Asep"</code> menggunakan tanda kutip ganda sehingga bertipe data teks (String).</td>
+                        </tr>
+                        <tr>
+                            <td><code>umur</code></td>
+                            <td>Number</td>
+                            <td><code>number</code></td>
+                            <td>Nilai <code>16</code> ditulis berupa angka tanpa tanda kutip sehingga bertipe data numerik (Number).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="answer-box">
+                <strong>Temuan — Apa perbedaan String dan Number berdasarkan eksperimenmu?</strong><br>
+                <strong>String</strong> adalah tipe data untuk teks/karakter yang penulisannya wajib diapit tanda kutip (<code>"..."</code> atau <code>'...'</code>), sedangkan <strong>Number</strong> adalah tipe data angka yang ditulis langsung tanpa tanda kutip dan dapat dioperasikan secara matematis.
+            </div>
+        </section>
+
+        <!-- AKTIVITAS 3 -->
+        <section>
+            <div class="section-label">Bagian E • Aktivitas 3</div>
+            <h2>Konversi String Menjadi Number</h2>
+            <p><strong>Soal Praktik:</strong> Perbaiki program agar menghasilkan <code>30</code> dengan menggunakan fungsi <code>Number()</code>:</p>
+            <pre><span class="kw">let</span> a = <span class="str">"10"</span>;
+<span class="kw">let</span> b = <span class="str">"20"</span>;
+<span class="kw">let</span> hasil = <span class="fn">Number</span>(a) + <span class="fn">Number</span>(b);
+<span class="fn">console</span>.<span class="fn">log</span>(hasil);</pre>
+
+            <div class="screenshot-wrapper">
+                <div class="screenshot-caption">Hasil Screenshot Console Praktik (Aktivitas 3):</div>
+                <div class="devtools-window">
+                    <div class="devtools-console-line">
+                        <span class="val-num">30</span>
+                        <span class="file-link">sridewi.js:16</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="answer-box">
+                <strong>Catatan Hasil Program:</strong><br>
+                Output yang tampil pada Console (<code>sridewi.js:16</code>) adalah <code>30</code> (bertipe Number). Fungsi <code>Number(a)</code> dan <code>Number(b)</code> berhasil mengubah teks <code>"10"</code> dan <code>"20"</code> menjadi angka <code>10</code> dan <code>20</code> sebelum dijumlahkan.
+            </div>
+        </section>
+
+        <!-- AKTIVITAS 4 -->
+        <section>
+            <div class="section-label">Bagian F • Aktivitas 4</div>
+            <h2>Program Kasir Sederhana</h2>
+            <p><strong>Soal Praktik:</strong> Buat program yang meminta harga barang dan jumlah barang melalui <code>prompt()</code>, mengubah keduanya menjadi <code>Number</code>, lalu menghitung total harga:</p>
+            <pre><span class="kw">let</span> harga = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan harga: "</span>));
+<span class="kw">let</span> jumlah = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan jumlah: "</span>));
+<span class="kw">let</span> total = harga * jumlah;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Total belanja = "</span> + total);</pre>
+
+            <div class="screenshot-wrapper">
+                <div class="screenshot-caption">Hasil Screenshot Console Praktik (Aktivitas 4):</div>
+                <div class="devtools-window">
+                    <div class="devtools-console-line">
+                        <span class="val-str">Total belanja = 0</span>
+                        <span class="file-link">sridewi.js:22</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Input Uji</th>
+                            <th>Nilai Uji 1 (Default / Kosong)</th>
+                            <th>Nilai Uji 2 (Contoh Belanja)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Harga</td>
+                            <td>Rp 0 (input kosong / batal)</td>
+                            <td>Rp 15.000</td>
+                        </tr>
+                        <tr>
+                            <td>Jumlah</td>
+                            <td>0</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>Total seharusnya</td>
+                            <td>Rp 0</td>
+                            <td>Rp 45.000</td>
+                        </tr>
+                        <tr>
+                            <td>Total program</td>
+                            <td><code>Total belanja = 0</code></td>
+                            <td><code>Total belanja = 45000</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- AKTIVITAS 5 / TANTANGAN -->
+        <section>
+            <div class="section-label">Bagian G • Aktivitas 5 (Tantangan)</div>
+            <h2>Program Hitung Nilai</h2>
+            <p><strong>Soal Praktik:</strong> Buat program dengan input nilai tugas, UTS, dan UAS. Konversikan semua input menggunakan <code>Number()</code>, lalu hitung rata-rata dengan rumus <code>(tugas + UTS + UAS) / 3</code>.</p>
+
+            <h3>Algoritma Saya:</h3>
+            <ol>
+                <li>Menerima input nilai <code>tugas</code>, <code>uts</code>, dan <code>uas</code> dari pengguna menggunakan fungsi <code>prompt()</code>.</li>
+                <li>Mengonversi ketiga hasil input tersebut dari tipe data String menjadi tipe data angka menggunakan <code>Number()</code>.</li>
+                <li>Menghitung rata-rata nilai dengan rumus <code>let rataRata = (tugas + uts + uas) / 3;</code>.</li>
+                <li>Menampilkan hasil nilai rata-rata ke layar Console menggunakan <code>console.log()</code>.</li>
+            </ol>
+
+            <h3>Kode Program JavaScript:</h3>
+            <pre><span class="kw">let</span> tugas = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan nilai Tugas: "</span>));
+<span class="kw">let</span> uts = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan nilai UTS: "</span>));
+<span class="kw">let</span> uas = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan nilai UAS: "</span>));
+
+<span class="kw">let</span> rataRata = (tugas + uts + uas) / <span class="num">3</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Nilai rata-rata = "</span> + rataRata);</pre>
+
+            <div class="screenshot-wrapper">
+                <div class="screenshot-caption">Hasil Screenshot Console Praktik (Aktivitas 5 — Contoh Input: Tugas 85, UTS 90, UAS 95):</div>
+                <div class="devtools-window">
+                    <div class="devtools-console-line">
+                        <span class="val-str">Nilai rata-rata = 90</span>
+                        <span class="file-link">sridewi.js:29</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THINK PAIR SHARE -->
+        <section>
+            <div class="section-label">Bagian H</div>
+            <h2>Think Pair Share</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Pertanyaan</th>
+                            <th>Jawaban</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mengapa <code>prompt()</code> perlu dikonversi jika hasilnya ingin dihitung?</td>
+                            <td>Karena fungsi <code>prompt()</code> selalu mengembalikan nilai bertipe <strong>String</strong> meskipun pengguna mengetikkan angka. Jika tidak dikonversi dengan <code>Number()</code>, operasi penjumlahan (<code>+</code>) akan menggabungkan teks, bukan menghitung nilai matematika.</td>
+                        </tr>
+                        <tr>
+                            <td>Apa perbedaan <code>"10"</code> dengan <code>10</code>?</td>
+                            <td><code>"10"</code> adalah tipe data <strong>String</strong> (teks) karena diapit tanda kutip, sedangkan <code>10</code> adalah tipe data <strong>Number</strong> (angka asli) yang dapat dihitung secara aritmatika.</td>
+                        </tr>
+                        <tr>
+                            <td>Apa yang terjadi jika lupa <code>Number()</code>?</td>
+                            <td>Pada operasi penjumlahan (<code>+</code>), angka akan digabung menyamping (contoh: <code>"10" + "20"</code> menjadi <code>"1020"</code>). Jika input berisi huruf lalu dihitung pada operator lain, hasilnya bisa menjadi <code>NaN</code> (<em>Not-a-Number</em>).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pair:</strong> Bandingkan jawaban dengan teman. Apakah sama? Mengapa bisa berbeda?</td>
+                            <td>Secara konsep inti jawabannya sama, yaitu <code>prompt()</code> menghasilkan String dan perlu dikonversi menggunakan <code>Number()</code>. Perbedaan hanya terletak pada contoh kasus atau susunan kalimat penjelasan.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Share:</strong> Sampaikan satu temuan penting kepada kelas.</td>
+                            <td>Setiap input yang berasal dari <code>prompt()</code> di JavaScript selalu bertipe <strong>String</strong>, sehingga wajib dikonversi dengan <code>Number()</code> terlebih dahulu sebelum diproses dalam perhitungan matematika agar tidak terjadi bug penggabungan teks.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- REFLEKSI 3-2-1 -->
+        <section class="refleksi-section">
+            <div class="ref-letter">I</div>
+            <h2>Refleksi 3 - 2 - 1</h2>
+
+            <h3>3 Hal yang Saya Pahami</h3>
+            <ul>
+                <li>Dapat membedakan tipe data <code>String</code> dan <code>Number</code>.</li>
+                <li>Memahami bahwa fungsi <code>prompt()</code> secara default selalu mengembalikan nilai berjenis String.</li>
+                <li>Mengerti cara mengonversi String ke Number menggunakan fungsi <code>Number()</code>.</li>
+            </ul>
+
+            <h3>2 Hal yang Masih Membingungkan</h3>
+            <ul>
+                <li>Menganalisis kesalahan akibat tipe data jika terjadi status error <code>NaN</code> (Not-a-Number).</li>
+                <li>Memahami bagaimana JavaScript menangani konversi otomatis (coercion) pada operator aritmatika selain tanda tambah (+).</li>
+            </ul>
+
+            <h3>1 Hal yang Ingin Saya Coba Pada Program Berikutnya</h3>
+            <p>Membuat program input dan perhitungan sederhana (seperti kalkulator mini atau program diskon belanja).</p>
+        </section>
+
+        <!-- PENILAIAN DIRI -->
+        <section class="penilaian-section">
+            <div class="ref-letter">J</div>
+            <h2>Penilaian Diri</h2>
+
+            <table class="penilaian-grid">
+                <thead>
+                    <tr>
+                        <th>Pernyataan Refleksi</th>
+                        <th>Ya</th>
+                        <th>Belum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Saya dapat membedakan String dan Number.</td>
+                        <td><span class="badge-check">✓</span></td>
+                        <td><span class="dash-mark">-</span></td>
+                    </tr>
+                    <tr>
+                        <td>Saya memahami prompt() menghasilkan String.</td>
+                        <td><span class="badge-check">✓</span></td>
+                        <td><span class="dash-mark">-</span></td>
+                    </tr>
+                    <tr>
+                        <td>Saya dapat menggunakan Number().</td>
+                        <td><span class="badge-check">✓</span></td>
+                        <td><span class="dash-mark">-</span></td>
+                    </tr>
+                    <tr>
+                        <td>Saya dapat menggunakan String().</td>
+                        <td><span class="badge-check">✓</span></td>
+                        <td><span class="dash-mark">-</span></td>
+                    </tr>
+                    <tr>
+                        <td>Saya dapat menemukan kesalahan tipe data.</td>
+                        <td><span class="dash-mark">-</span></td>
+                        <td><span class="badge-cross">✕</span></td>
+                    </tr>
+                    <tr>
+                        <td>Saya dapat membuat program input dan hitung sederhana.</td>
+                        <td><span class="dash-mark">-</span></td>
+                        <td><span class="badge-cross">✕</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>LKPD JavaScript - Dasar-Dasar Pengembangan Perangkat Lunak dan Gim</p>
+            <p>Sri Dewi | X-PPLG 1 | SMKN 1 GARUT</p>
+        </footer>
+    </div>
+</body>
+</html>
